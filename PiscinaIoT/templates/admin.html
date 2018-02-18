@@ -1,0 +1,59 @@
+{% extends "index.html" %}
+{% block content %}
+
+<br><br><br><br><br>
+
+<div class="container" >
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> E-mail </th>
+                    <th> Senha </th>
+                    <th> Ultimo Acesso</th>
+                    <th> Acessos </th>
+                    <th> Deletar </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    {% if user[3] == 2 %}
+                    <tr class="info" style="color:black">
+                    {% else %}
+                    <tr class="active" style="color:black">
+                    {% endif %}
+                        <td> {{user[0]}} </td>
+                        <td> {{user[1]}} </td>
+                        <td> <font size="1">{{user[2]}} </font></td>
+                        <td> {{user[4]}} </td>
+                        <td> {{user[5]}} </td>
+                        <td>
+                            <form action="{{ url_for('admin') }}" method="post">
+                                <input type ="submit" name ="submit" value ="{{user[0]}}" /><SPAN class="glyphicon glyphicon-trash"></SPAN>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+        <form class="form-horizontal" role="form" method=post>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-md" name ="submit" value ="novousuario"> <strong> Adicionar Usuário </strong> </button>
+                <div class="checkbox">
+                    <label><input type="checkbox" name="admin" value="">admin</label>
+                </div>
+                <div>
+                    <label for="usr">email</label>
+                    <input type="text" class="form-control" id="usuario" name="usuario">
+                </div>
+                <div>
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="senha" name='senha'>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

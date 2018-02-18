@@ -1,0 +1,221 @@
+{% extends "index.html" %}
+
+{% block content %}
+{% for val_horarios in val_horarios %}
+{% endfor %}
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/bootstrap-datepicker.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='dist/bootstrap-clockpicker.min.css')}}"/>
+<script src="{{url_for('static',filename='js/bootstrap-datepicker.min.js')}}"> </script>
+<script src="{{url_for('static',filename='js/bootstrap-datepicker.pt-BR.min.js')}}"> </script>
+<script type="text/javascript" src="{{url_for('static',filename='dist/bootstrap-clockpicker.min.js')}}"></script>
+  
+  <div class="container">
+	  <div class="container-fluid">
+  		<div class="jumbotron text-center"style="color:white;padding-top:25px;padding-bottom:0px;">
+		<h1>Horarios</h1>
+		<p>Ajuste os dias da semana e horário Inicial e Final</p>
+		<p>Ligará automáticamente o motor do filtro</p>
+        <form>
+  			    <div class="row">
+  				    <div class='col-sm-5'>
+  					    <div class="form-group">
+							<div class="input-group clockpicker1">		
+								<input type="text" class="form-control" value="{{val_horarios[7]}}" id="hora_inicial">
+								<label>-> Horário Inicial:</br><span class="glyphicon glyphicon-time"></span> </label>	
+							</div> 
+						</div>
+					</div>			  
+  				    <div class='col-sm-5'>
+  					    <div class="form-group">
+							<div class="input-group clockpicker2">
+								<input type="text" class="form-control" value="{{val_horarios[8]}}" id="hora_final">
+								<label>-> Horário Final:</br><span class="glyphicon glyphicon-time"></span> </label>
+							</div> 
+						</div>
+					</div>	
+					<div class='col-sm-2'>	
+						<div class="form-group">
+						
+							<span class="input-group-btn">
+								<button class="btn btn-success" type="button" id="bt_horarios_update">
+								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+								salvar
+								</button>
+							</span> 
+						<!--
+							<div class="input-group">
+							<input class="form-control" id="horario_atual" value="" placeholder="Now">
+							<span class="input-group-addon"> 
+							<label>Hora Local:</label>
+							<span class="glyphicon glyphicon-time"></span> 
+							</span>
+							</div>
+							-->
+						</div>	
+					</div>	
+				</div>
+        </form>
+
+				
+<form name="form1">				
+<div class="row">				
+<div class='col-sm-2'>				
+<div class="form-check form-check-inline">
+  <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" name="semana" value="Dom" ></br> Dom
+  </label>
+</div>
+</div>
+
+<div class='col-sm-1'>
+<div class="form-check form-check-inline">
+  <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" name="semana" value="Seg" ></br> Seg
+  </label>
+</div>
+</div>
+
+<div class='col-sm-2'>
+<div class="form-check form-check-inline">
+  <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" name="semana" value="Ter"></br> Ter
+  </label>
+</div>			
+</div>
+
+<div class='col-sm-2'>				
+<div class="form-check form-check-inline">
+  <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" name="semana" value="Qua"></br> Qua
+  </label>
+</div>				
+</div>
+				
+<div class='col-sm-2'>				
+<div class="form-check form-check-inline">
+  <label class="form-check-label" >
+    <input class="form-check-input" type="checkbox" name="semana" value="Qui"></br> Qui
+  </label>
+</div>
+</div>
+
+<div class='col-sm-2'>
+<div class="form-check form-check-inline">
+  <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" name="semana" value="Sex"></br> Sex
+  </label>
+</div>
+</div>
+
+<div class='col-sm-1'>
+<div class="form-check form-check-inline">
+  <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" name="semana" value="Sab"></br> Sab
+  </label>
+</div>				
+</div>				
+		
+</div>
+</form>
+
+		
+
+      </div>
+    </div>
+  </div>
+  
+<script type="text/javascript"> 
+	
+	var ini_time = $('.clockpicker1').clockpicker({
+					placement: 'top', 
+					align: 'right',
+					autoclose:'true',
+					//donetext: 'Pronto',
+					});  
+		
+	var fim_time = $('.clockpicker2').clockpicker({
+					placement: 'top', 
+					align: 'right', 
+					//donetext: 'Pronto',
+					autoclose:'true',
+					});	
+				
+	 var input = $('#horario_atual').clockpicker({ 
+					placement: 'top', 
+					align: 'left',
+					donetext: 'Pronto',
+					//autoclose: true, 
+					'default': 'now' 
+					}); 
+	
+
+var horarios_var=["","","","","","","","",""]
+
+function verificar() {
+	var objCheck = document.getElementsByName("semana");
+	for (var iLoop = 0; iLoop<objCheck.length; iLoop++){
+		if (objCheck[iLoop].checked) {
+			horarios_var[iLoop] = 1;
+							
+		}
+		else {
+				if(objCheck[iLoop].checked == false) {
+						horarios_var[iLoop] = 0;
+									
+				}       
+			}
+	}
+
+}
+
+
+//========= botao salvar horarios ====================================
+    $('#bt_horarios_update').click(function(){
+		alert( "salvar horarios!" );
+		verificar();
+		horarios_var[7] = $("#hora_inicial").val();
+		horarios_var[8] = $("#hora_final").val();
+		$.get( "/update_horarios/"+ horarios_var, 
+			function( data ){
+				   horarios_var;
+				   //console.log(horarios_var);
+			}
+		);  
+    });
+
+
+	
+</script>
+
+<script type="text/javascript">  	
+ //==============executar quando a pagina for aberta===================
+//=============== carrega os checkbox e horas =========================
+$(function() {	
+	carregar_horarios();
+})
+
+function carregar_horarios(){
+
+    $.get("/carrega_horarios",function(data){
+            console.log(data);
+			var objCheck = document.getElementsByName("semana");			
+			var datas = data.split(',');
+			for (var iLoop = 0; iLoop<objCheck.length; iLoop++){
+				if (datas[iLoop] == 1){
+					(objCheck[iLoop].checked = true);
+				}
+				else {
+					(objCheck[iLoop].checked = false);
+				}
+			}
+		
+		});	
+		
+}
+
+
+</script> 
+
+	
+{% endblock %}

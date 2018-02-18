@@ -1,0 +1,214 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+{% for temp in temp %}
+{% endfor %}
+
+  <div class="container">
+    <div class="container-fluid">
+      <div class="jumbotron text-center" style="color:black">
+	  <h1 style="color:white">Serviços</h1>
+	  <p>Controle Automático/Manual: </p>
+	  <p>Selecione o checkbox desejado</p> 
+	  
+	  
+<!--       
+	   <form>
+            <label for="inputValor">Digite um Valor:</label>
+			<input type="text" id="inputValor" />
+		   
+            <input type="button" value="Envia Servo" id="bt_servo_update"/>
+            <label>Motor1
+              <button type="button" class="btn btn-danger btn-xs active" id="bt_rele1">M1</button>
+            </label>
+            <label>Motor2
+              <button type="button" class="btn btn-danger btn-xs active" id="bt_rele2">M2</button>
+            </label>
+          </form>
+  -->  
+  
+  
+  
+<form name="form1">				
+<div class="row">				
+<div class='col-sm-3'>				
+<div class="form-check form-check-inline">
+  <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" name="servico" value="Retro Lavagem" ></br> Retro Lavagem
+  </label>
+</div>
+</div>
+
+<div class='col-sm-3'>
+<div class="form-check form-check-inline">
+  <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" name="servico" value="Motor 1" ></br> Motor 1
+  </label>
+</div>
+</div>
+
+<div class='col-sm-3'>
+<div class="form-check form-check-inline">
+  <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" name="servico" value="Motor 2"></br> Motor 2
+  </label>
+</div>			
+</div>
+
+<div class='col-sm-3'>
+	<label for="inputValor_temp">Digite a temperatura para ligar o motor 1:</label>
+	<input type="text" style="width:65px;font-size: 13px"  id="inputValor_temp" value="{{val_servicos[3]}}"/>
+<span class="input-group-btn">
+	<button class="btn btn-success" type="button" id="bt_servicos_update">
+	<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+	Salvar
+	</button>
+</span>
+</div>
+
+</div>
+</form>
+
+
+
+	 </div>
+    </div>
+  </div>
+
+  
+{% block content_10 %}
+{% endblock %}
+  
+ 
+
+
+<script type="text/javascript"> 
+	
+	var servicos_var=["","","",""];
+
+function verificar_servicos() {
+	//alert('entrou em serviços');
+	servicos_var=["","","",""];
+	//alert('entrada serviços ='+servicos_var);
+	var objCheck = document.getElementsByName("servico");
+	
+	for (var iLoop = 0; iLoop<objCheck.length; iLoop++){
+		
+		if (objCheck[iLoop].checked) {
+			servicos_var[iLoop] = '1';
+			//alert('serviços 1='+servicos_var);
+							
+		}
+		else {
+				if(objCheck[iLoop].checked == false) {
+						servicos_var[iLoop] = '0';
+						//alert('serviços 0='+servicos_var);
+									
+				}       
+			}
+			
+	}
+	servicos_var[3]= $("#inputValor_temp").val();
+	//console.log(servicos_var);
+
+}
+
+//========= botao salvar servicos ====================================
+    $('#bt_servicos_update').click(function(){
+		alert( "salvar serviços!" );
+		verificar_servicos();
+		servicos_var[3]= $("#inputValor_temp").val();
+		$.get( "/update_servicos/"+ servicos_var, 
+			function( data ){
+				   servicos_var;
+				   //console.log(servicos_var);
+			}
+		);  
+    });
+</script>
+	
+	
+<script type="text/javascript">  	
+ //==============executar quando a pagina for aberta===================
+//=============== carrega os checkbox e servicos =========================
+$(function() {	
+	carregar_servicos();
+})
+
+function carregar_servicos(){
+
+    $.get("/carrega_servicos",function(data){
+            console.log(data);
+			var objCheck = document.getElementsByName("servico");			
+			var servicos_var = data;
+			var servicos_temp = data.split(',');
+
+			for (var iLoop = 0; iLoop<objCheck.length; iLoop++){
+				if (servicos_temp[iLoop] == 1){
+					(objCheck[iLoop].checked = true);
+					//alert('Checkbox ('+objCheck[iLoop].value+')Ligado');	
+				}
+				else {
+					(objCheck[iLoop].checked = false);
+					//alert('Checkbox ('+objCheck[iLoop].value+')Desligado');
+				}
+			}
+
+		});			
+}
+</script> 
+
+
+ 
+<script type="text/javascript">
+    //===========SERVO=================================
+      $("#bt_servo_update").click(function(){
+          var valor = $("#inputValor").val();
+          $.get( "/servo/" + valor, function( data ) {
+              valor;
+              //console.log( "Load was performed." );
+              //location.href='/servo/'+ valor;
+          });
+      })
+      //================================================
+        //================RELE 1==========================
+      $("#bt_rele1").click(function(){
+        if ($("#bt_rele1").html() == "on")
+        {
+          $("#bt_rele1").html("off");
+          $.get( "/rele1/0", function( data )
+		  {
+			//console.log( "Load was performed." );
+		  });
+        }
+        else
+        {
+            $("#bt_rele1").html("on");
+            $.get( "/rele1/1", function( data ){
+              //console.log( "Load was performed." );
+            });
+        }
+        })
+        //================================================
+        //================RELE 2==========================
+          $("#bt_rele2").click(function(){
+            if ($("#bt_rele2").html() == "on")
+            {
+              $("#bt_rele2").html("off");
+              $.get( "/rele2/0", function( data ){
+                  //console.log( "Load was performed." );
+              });
+            }
+            else
+            {
+                $("#bt_rele2").html("on");
+                $.get( "/rele2/1", function( data ){
+                    //console.log( "Load was performed." );
+                });
+            }
+            })
+            //================================================
+
+</script>   
+{% endblock %}

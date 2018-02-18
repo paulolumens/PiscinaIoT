@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="./dash">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Navbar</li>
+      </ol>
+      <h1>Navbar</h1>
+      <hr>
+      <p>The SB Admin navbar can be either fixed or static, and it supports the navbar-light and navbar-dark Bootstrap 4 classes.</p>
+      <a class="btn btn-primary" href="#" id="toggleNavPosition">Toggle Fixed/Static Navbar</a>
+      <a class="btn btn-primary" href="#" id="toggleNavColor">Toggle Navbar Color</a>
+      <!-- Blank div to give the page height to preview the fixed vs. static navbar-->
+      <div style="height: 200px;"></div>
+
+    <script>
+    $('#toggleNavPosition').click(function() {
+      $('body').toggleClass('fixed-nav');
+      $('nav').toggleClass('fixed-top static-top');
+    });
+
+    </script>
+    <!-- Toggle between dark and light navbar-->
+    <script>
+    $('#toggleNavColor').click(function() {
+      $('nav').toggleClass('navbar-dark navbar-light');
+      $('nav').toggleClass('bg-dark bg-light');
+      $('body').toggleClass('bg-dark bg-light');
+    });
+
+    </script>
+  </div>
+{% endblock %}

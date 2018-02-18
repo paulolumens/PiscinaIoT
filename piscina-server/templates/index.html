@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="Piscina IOT" content="Piscina Iot Automação">
+  <meta name="Wesley F Mandro" content="Wesley F Mandro">
+  <title>Piscina Iot</title>
+
+<!-- Customização do Carrousel
+   <style>.carousel-inner > .item > img { width:100%; height:570px; } </style>
+-->
+  <!-- Bootstrap core CSS-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" >
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<!--
+  <link href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css' )}}" rel="stylesheet">
+-->
+  <!-- Custom fonts for this template-->
+  <link href="{{url_for('static', filename='font-awesome/css/font-awesome.min.css' )}}" rel="stylesheet">
+  <!-- Page level plugin CSS-->
+  <link href="{{url_for('static', filename='datatables/dataTables.bootstrap4.css' )}}" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="{{url_for('static', filename='css/sb-admin.css' )}}" rel="stylesheet">
+
+  <link rel="shortcut icon" href="{{url_for('static',filename='img/favicon.ico')}}" >
+
+    <!-- Custom styles for this template -->
+    <link href="{{url_for('static', filename='carousel.css' )}}" rel="stylesheet">
+
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top" onload="Atualize_Relogio()">
+
+<!-- COMEÇO DOS SCRIPTS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!--
+    <!- Bootstrap core JavaScrip
+    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static',filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+-->
+
+<!-- Core plugin JavaScript-->
+<script src="{{url_for('static', filename='jquery-easing/jquery.easing.min.js')}}"></script>
+
+
+
+<script type="text/javascript">
+
+function Atualize_Relogio(){
+        momentoAtual = new Date()
+        dia = momentoAtual.getDate()
+        mes = momentoAtual.getMonth()
+        ano = (momentoAtual.getYear())+ 1900
+        num_semana = momentoAtual.getDay()
+        hora = momentoAtual.getHours()
+        minuto = momentoAtual.getMinutes()
+        segundo = momentoAtual.getSeconds()
+
+        str_segundo = new String (segundo)
+        if (str_segundo.length == 1)
+            segundo = "0" + segundo
+
+        str_minuto = new String (minuto)
+        if (str_minuto.length == 1)
+            minuto = "0" + minuto
+
+        str_hora = new String (hora)
+        if (str_hora.length == 1)
+            hora = "0" + hora
+
+        str_dia = new String (dia)
+        if (str_dia.length == 1)
+            dia = "0" + dia
+
+
+        dia_semana = "";
+
+        switch(num_semana){
+            case 0: dia_semana = "Domingo";break;
+            case 1: dia_semana = "Segunda";break;
+            case 2: dia_semana = "Terça";break;
+            case 3: dia_semana = "Quarta";break;
+            case 4: dia_semana = "Quinta";break;
+            case 5: dia_semana = "Sexta";break;
+            case 6: dia_semana = "sábado";break;
+        }
+
+        mes += 1
+        horaImprimivel = dia +"/" + mes +" - " +dia_semana+" " + hora + ":" + minuto + ":" + segundo
+
+        var objectRelogio = document.getElementById("bt_relogio");
+        objectRelogio.value = horaImprimivel;
+        carregar_horarios_txt();
+        setTimeout("Atualize_Relogio()",1000)
+    }
+</script>
+
+<script type="text/javascript">
+var servicos_var = $.get("/carrega_servicos",function(data){
+                            servicos_var = data;
+                            return (servicos_var);
+                        });
+var valor1;
+
+
+function carregar_horarios_txt(){
+
+    if (segundo == '00'){
+    //carregar_servicos();
+//$(function () {
+    $.get("/carrega_horarios",function(data){ //garrega horarios
+            console.log(data);
+            var datas = data.split(',');
+            var	horaIni = datas[7].split(':');
+            var	horaFin = datas[8].split(':');
+            //alert('inicia horas');
+            str_inicial = horaIni[0]+horaIni[1];
+            str_final = horaFin[0]+horaFin[1];
+            str_atual = hora +''+ minuto;
+
+
+            var temp1, RetroLvagem, Motor1, Motor2, temperatura; //variaveis p/ serviços
+            var tam = servicos_var.length;
+            //console.log('tamanho da variavel= '+tam+' , variaveis '+servicos_var);
+            if (tam > 4){
+            temp1 = servicos_var.split(","); // carrega txt serviços
+            }else{
+            temp1 = servicos_var;
+            }
+            tam = temp1.length;
+            //console.log('tam variavel tratada= '+tam+' , variaveis '+temp1);
+            //temp1 = servicos_var; // carrega txt serviços
+            RetroLavagem = parseInt(temp1[0]);			// separa valores
+            Motor1 = parseInt(temp1[1]);				// separa valores
+            Motor2 = parseInt(temp1[2]);				// separa valores
+            temperatura = (temp1[3]); //alert('retro lavagem = '+RetroLavagem+', Motor1= '+Motor1+', Motor2= '+Motor2);
+
+            //console.log('checkboxs= '+RetroLavagem+','+Motor1+','+Motor2+','+temperatura);
+
+//======================Serviços Retrolavagem ==================================
+            //====== bloqueio do sistema via site ==============================
+        if (RetroLavagem == 0){
+//========= Liga ou desliga rele2 Motor2 conforme horarios controle pagina===========
+                if (datas[num_semana] == 1){
+
+                    if (str_atual >= str_inicial){
+                        if (str_atual < str_final){
+                            $.get( "/rele2/1", function( data ){
+                                console.log( data);
+                            });
+                        }else {
+                          $.get( "/rele2/0", function( data ){
+                              console.log(data);
+                          });
+                          }
+                    }
+
+                }else {
+                          $.get( "/rele2/0", function( data ){
+                              console.log(data);
+                          });
+                        }
+//=====================================================================================
+
+                        valor1 = 0;
+
+                         $.get( "/servo/" + valor1, function( data ) {//fechar valvula
+                                  //console.log(valor1);
+                                  //location.href='/servo/'+ valor;
+                            });
+
+
+        }else{
+
+                    valor1 = 180;
+                     $.get( "/servo/" + valor1, function( data ) {
+
+                        });
+
+            }
+
+        //================ ligar motor 1 via site serviços =====================
+        if(Motor1 == 1){
+                $.get( "/rele1/1", function( data ){
+                console.log( data);
+                });
+            }
+
+        //================ ligar motor 2 via site serviços =====================
+        if(Motor2 == 1){
+                $.get( "/rele2/1", function( data ){
+                console.log( data);
+                });
+            }
+//==============================================================================
+
+
+        });
+
+    }
+}
+</script>
+
+
+<!-- FIM DOS SCRIPTS-->
+
+
+
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="./">Projeto Piscina IoT</a>
+	
+	
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+	
+	
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+	
+	
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="./home">
+            <i class="fa fa-fw fa-home"></i>
+            <span class="nav-link-text">Home</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="./web">
+            <i class="fa fa-fw fa-globe"></i>
+            <span class="nav-link-text">Clima</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Graficos">
+          <a class="nav-link" href="./zoonable">
+            <i class="fa fa-fw fa-area-chart"></i>
+            <span class="nav-link-text">Graficos</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="./sensores2">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">Sensores</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="./dash">
+            <i class="fa fa-fw fa-file"></i>
+            <span class="nav-link-text">Exemplo</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-wrench"></i>
+            <span class="nav-link-text">Ajustes</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponents">
+            <li>
+              <a href="./horarios">Horarios
+                <i class="fa fa-fw fa-clock-o" data-placement="left"></i>
+              </a>
+            </li>
+            <li>
+              <a href="./servicos2">Serviços
+                  <i class="fa fa-fw fa-cogs" data-placement="left"></i>
+              </a>
+            </li>
+            <!--
+			<li>
+              <a href="./navbar">Navbar</a>
+            </li>
+            <li>
+              <a href="./cards">Cards</a>
+            </li>
+			-->
+          </ul>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-link"></i>
+            <span class="nav-link-text">Autenticação</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+            <li>
+              <a href="./loggin">Login
+                 <i class="fa fa-fw fa-sign-in" data-placement="left"></i>
+              </a>
+            </li>
+            <li>
+              <a href="./admin">Admin
+                  <i class="fa fa-fw fa-user-plus" data-placement="left"></i>
+              </a>
+            </li>
+            <li>
+              <a href="./usuario">Usuario
+                  <i class="fa fa-fw fa-book" data-placement="left"></i>
+              </a>
+            </li>
+           </ul>
+        </li>	
+	 </ul>
+	 
+	 
+	 
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+
+
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item">
+            <form class="form-inline my-2 my-lg-0 mr-lg-2">
+              <div class="input-group">
+                <input id="bt_relogio" class="form-control" type="text">
+
+              </div>
+            </form>
+        </li>
+		
+        <li class="nav-item"><a href={{url_for('usuario')}}>
+        <span class="nav-link">
+        <i class="fa fa-fw fa-user"></i>
+         {{session['name']}} </a>
+        </span>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+        </li>
+      
+	  
+	  </ul>
+    
+	
+	
+	</div>
+  
+  
+  </nav>
+
+  <div class="content-wrapper">
+
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © Piscina IoT 2017 - </small>
+          <small>Developed By Paulo Furlan / Silvio Fonseca / Wesley Mandro</small>
+        </div>
+      </div>
+    </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+		  
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="./loggin">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Page level plugin JavaScript-->
+  <script src="{{url_for('static', filename='chart.js/Chart.min.js')}}"></script>
+  <script src="{{url_for('static', filename='datatables/jquery.dataTables.js')}}"></script>
+  <script src="{{url_for('static', filename='datatables/dataTables.bootstrap4.js')}}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{{url_for('static', filename='js/sb-admin.min.js')}}"></script>
+
+  <!-- Custom scripts for this page-->
+  <script src="{{url_for('static', filename='js/sb-admin-datatables.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/sb-admin-charts.min.js')}}"></script>
+
+  <script type="text/javascript">
+    	<!--$.( document ).ready(){ -->
+
+     //===========SERVO=================================
+    $("#bt_servo_update").click(function(){
+        var valor = $("#inputValor").val();
+            $.get( "/servo/" + valor, function( data ) {
+                valor;
+                //console.log( "Load was performed." );
+                //location.href='/servo/'+ valor;
+            });
+    })
+    //================================================
+
+
+     //================RELE1==========================
+    $("#bt_rele1").click(function(){
+        if ($("#bt_rele1").html() == "on"){
+            $.get( "/rele1/1", function( data ){
+               // console.log( "Load was performed." );
+            });
+        }
+
+        if ($("#bt_rele1").html() == "off"){
+            $.get( "/rele1/0", function( data ){
+    				//console.log( "Load was performed." );
+            });
+        }
+
+     })
+     //================================================
+
+
+     //================RELE2==========================
+    $("#bt_rele2").click(function(){
+        if ($("#bt_rele2").html() == "on"){
+            $.get( "/rele2/1", function( data ){
+                //console.log( "Load was performed." );
+            });
+        }
+
+        if ($("#bt_rele2").html() == "off"){
+            $.get( "/rele2/0", function( data ){
+    				//console.log( "Load was performed." );
+            });
+        }
+
+     })
+     //================================================
+
+    //==============================pagina sensores ==========================
+
+    $("#autoupdate_potenciometro").click(function() {
+        if ($(this).prop('checked'))
+        {
+            f_autoupdate_potenciometro();
+    		//console.log( "Load was performed." );
+        }
+    	})
+
+    $("#autoupdate_potenciometro").change(function() {
+        if ($(this).prop('checked'))
+        {
+            f_autoupdate_potenciometro();
+    		//console.log( "Load was performed." );
+        }
+    	})
+
+    function f_autoupdate_potenciometro(){
+        if ($('#autoupdate_potenciometro').prop('checked'))
+        {
+            update_potenciometro();
+            setTimeout(function() {
+                    f_autoupdate_potenciometro();
+    				//console.log( "Load was performed." );
+            }, 1000);
+    		console.log( "Load was performed." );
+        }
+    }
+});
+    </script>
+
+
+</body>
+
+</html>

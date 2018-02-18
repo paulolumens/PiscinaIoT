@@ -1,0 +1,545 @@
+{% extends "index.html" %}
+
+{% block content %}
+{% for lista1 in lista1 %}
+{% endfor %}
+{% for valores1 in valores1 %}
+{% endfor %} 
+<h1><center> Sensores </center></h1>
+<div class="row">
+	<div class='col-sm-6'>
+		<form>
+			<div id="container1" style="min-width: 50px; max-width: 400px; height: 300px; margin: 0 auto"></div>
+		</form>
+	</div>
+	
+	<div class='col-sm-6'>
+		<form>
+			<div id="container2" style="min-width: 50px; max-width: 400px; height: 300px; margin: 0 auto"></div>
+		</form>
+	</diV>
+</div>
+			
+<div class="row">
+	<div class='col-sm-6'>
+		<form>
+			<div id="container3" style="min-width: 50px; max-width: 400px; height: 300px; margin: 0 auto"></div>
+		</form>
+	</div>
+	
+	<div class='col-sm-6'>
+		<form>
+			<div id="container4" style="min-width: 50px; max-width: 400px; height: 300px; margin: 0 auto"></div>
+		</form>
+	</diV>
+</div>			
+			
+<script language="JavaScript">
+Highcharts.chart('container1', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+
+    title: {
+        text: 'Termometro'
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 100,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'Temperatura'
+        },
+        plotBands: [{
+            from: 0,
+            to: 5,
+            color: '#D0FFFF' // LightCyan
+        }, {
+            from: 5,
+            to: 15,
+            color: '#00BFFF' // DeepSkyBlue
+        }, {
+            from: 15,
+            to: 28,
+            color: '#55BF3B' // green
+        }, {
+            from: 28,
+            to: 35,
+            color: '#DDDF0D' // yellow
+        },  {
+            from: 35,
+            to: 65,
+            color: '#FF4500' //OrangeRed
+        },{
+            from: 65,
+            to: 100,
+            color: '#FF0000' // red
+        }]
+    },
+
+    series: [{
+        name: 'Temperatura',
+        data: [22],
+        tooltip: {
+            valueSuffix: ' Graus'
+        }
+    }]
+
+},
+// Add some life
+function (chart) {
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+		
+			$.get("/update_potenciometro",{},
+				function(data){
+					//console.log(data);
+					var temperatura = data[0];
+
+            var point = chart.series[0].points[0],
+                newVal,	
+            newVal = point.y = temperatura;
+            point.update(newVal);
+			
+			});
+
+        }, 1000);
+    }
+});
+
+</script>  
+
+<script language="JavaScript">
+Highcharts.chart('container2', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+
+    title: {
+        text: 'phmetro'
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 14,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 0.5,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'pH'
+        },
+        plotBands: [{
+            from: 0,
+            to: 3,
+            color: '#FF0000' // red
+        },{
+            from: 3,
+            to: 4,
+            color: '#FF7F00' // DarkOrange1
+        }, {
+            from: 4,
+            to: 6,
+            color: '#DDDF0D' // yellow
+        }, {
+            from: 6,
+            to: 7,
+            color: '#55BF3B' // green
+        }, {
+            from: 7,
+            to: 10,
+            color: '#436EEE' // RoyalBlue2
+        },  {
+            from: 10,
+            to: 12,
+            color: '#E066FF' //MediumOrchid1
+        },{
+            from: 12,
+            to: 14,
+            color: '#551A8B' // Purple4
+        }]
+    },
+
+    series: [{
+        name: 'Acidez',
+        data: [7],
+        tooltip: {
+            valueSuffix: ' pH'
+        }
+    }]
+
+},
+// Add some life
+function (chart) {
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+		
+			$.get("/update_potenciometro",{},
+				function(data){
+					//console.log(data);
+					var ph = data[1];
+
+            var point = chart.series[0].points[0],
+                newVal,	
+            newVal = point.y = ph;
+            point.update(newVal);
+			
+			});
+
+        }, 1000);
+    }
+});
+
+</script>  
+
+<script language="JavaScript">
+Highcharts.chart('container3', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+
+    title: {
+        text: 'Pressão M1'
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 60,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'PSI'
+        },
+       
+        plotBands: [{
+            from: 0,
+            to: 20,
+            color: '#55BF3B' // green
+        }, {
+            from: 20,
+            to: 30,
+            color: '#DDDF0D' // yellow
+        },{
+            from: 30,
+            to: 40,
+            color: '#FF7F00' // DarkOrange1
+        }, {
+            from: 40,
+            to: 60,
+            color: '#CD0000' // Red3
+        }]
+    },
+
+    series: [{
+        name: 'psi',
+        data: [0],
+        tooltip: {
+            valueSuffix: ' psi'
+        }
+    }]
+},
+// Add some life
+function (chart) {
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+		
+			$.get("/update_potenciometro",{},
+				function(data){
+					//console.log(data);
+					var psi1 = data[2];
+
+            var point = chart.series[0].points[0],
+                newVal,	
+            newVal = point.y = psi1;
+            point.update(newVal);
+			
+			});
+
+        }, 1000);
+    }
+});
+
+</script>  
+
+<script language="JavaScript">
+Highcharts.chart('container4', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+
+    title: {
+        text: 'Pressão M2'
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 60,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'PSI'
+        },
+        plotBands: [{
+            from: 0,
+            to: 20,
+            color: '#55BF3B' // green
+        }, {
+            from: 20,
+            to: 30,
+            color: '#DDDF0D' // yellow
+        },{
+            from: 30,
+            to: 40,
+            color: '#FF7F00' // DarkOrange1
+        }, {
+            from: 40,
+            to: 60,
+            color: '#CD0000' // Red3
+        }]
+    },
+
+    series: [{
+        name: 'psi',
+        data: [0],
+        tooltip: {
+            valueSuffix: ' psi'
+        }
+    }]
+
+},
+// Add some life
+function (chart) {
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+		
+			$.get("/update_potenciometro",{},
+				function(data){
+					//console.log(data);
+					var psi2 = data[3];
+
+            var point = chart.series[0].points[0],
+                newVal,	
+            newVal = point.y = psi2;
+            point.update(newVal);
+			
+			});
+
+        }, 1000);
+    }
+});
+
+</script>  
+
+{% endblock %}

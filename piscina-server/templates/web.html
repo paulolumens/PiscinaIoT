@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% block content %}
+<style type="text/css">
+  .paragrafo_1{
+      font-family: "Times New Roman", "serif";
+      width:auto;
+      text-align: left;
+      color: darkblue;
+      font-size:150%;
+    }
+  </style>
+  <div class="container">
+    <div class="container-fluid">
+      <div class="jumbotron text-center"style="color:black;padding-top:25px;padding-bottom:0px;">
+	  <h1>Clima Piracicaba</h1>
+	       <ul class="list-group">
+           {% for valores2 in valores2 %}
+           {% endfor %}
+           {% for lista2 in lista2 %}
+           {% endfor %}
+           <dl class="dl-horizontal">
+          <li class="list-group-item paragrafo_1"><dt> {{lista2[0]}}: <dt> <dd>{{valores2[0]}} Graus C.</dd></li>
+          <li class="list-group-item paragrafo_1"><dt> {{lista2[1]}}: <dt> <dd>{{valores2[1]}} hPa</dd></li>
+          <li class="list-group-item paragrafo_1"><dt> {{lista2[2]}}: <dt> <dd>{{valores2[2]}} %</dd></li>
+          <li class="list-group-item paragrafo_1"><dt> {{lista2[3]}}: <dt> <dd>{{valores2[3]}} m/s</dd></li>
+          </dl>
+		    </ul>
+		  </div>
+		</div>
+	</div>
+{% endblock %}

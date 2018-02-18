@@ -1,0 +1,86 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+	  <style type='text/css'>
+		.text_color{
+			color: #ff7600;
+
+			}
+		</style>
+		
+		
+<div class="container-fluid" >
+
+    <div class="jumbotron text-center" style="background:#ff7600!important">
+        <h1> Flask no Galileo e kit Grove </h1>
+        <p>
+            Exemplo de controle de atuadores e leitura de sensores
+            utilizando flask e as bibliotecas upm e wiringx86.
+        </p>
+        <p>
+            A atualização
+            dos valores dos sensores é feita via ajax com jquery e os dados
+            salvos em um banco sqlite.
+        </p>
+    </div>
+
+
+
+	  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" >
+	  <ol class="carousel-indicators">
+	    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+	    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+	    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+		<li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+		<li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+		<li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+		<li data-target="#carouselExampleIndicators" data-slide-to="7"></li>
+	  </ol>
+	  <div class="carousel-inner" role="listbox">
+	    <div class="carousel-item active">
+	      <!--<img class="d-block img-fluid" src="static/img/iot.jpg" alt="First slide" style="width:640px;height:640px">-->
+		  <img class="d-block img-fluid" src="static/img/imagem1.jpg" alt="First slide">
+	    </div>
+		<!-- Item do carrousel-->
+		<div class="carousel-item">
+	      <img class="d-block img-fluid" src="static/img/imagem2.jpg" alt="Second slide" >
+	    </div>
+
+		<div class="carousel-item">
+	      <img class="d-block img-fluid" src="static/img/imagem3.jpg" alt="Third slide" >
+	    </div>
+		<!-- Item do carrousel-->
+		<div class="carousel-item">
+	      <img class="d-block img-fluid" src="static/img/imagem4.jpg" alt="Fourth slide" >
+	    </div>
+		<!-- Item do carrousel-->
+		<div class="carousel-item">
+	      <img class="d-block img-fluid" src="static/img/imagem5.jpg" alt="Fifth slide" >
+	    </div>
+		<!-- Item do carrousel-->
+		<div class="carousel-item">
+	      <img class="d-block img-fluid" src="static/img/imagem6.jpg" alt="Sixth slide" >
+	    </div>
+		<!-- Item do carrousel-->
+		<div class="carousel-item">
+		  <img class="d-block img-fluid" src="static/img/imagem7.jpg" alt="Seventh slide" >
+		</div>
+
+	  </div>
+	  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Anterior</span>
+	  </a>
+	  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Proximo</span>
+	  </a>
+	  </div>
+
+</div>
+
+
+
+
+{% endblock %}

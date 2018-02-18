@@ -1,0 +1,445 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container">
+	<div class="container-fluid">
+		<div class="jumbotron text-center"style="color:black">
+		<div><h1> Graficos </h1></div>	
+		<div>
+		<form>
+			<div id="container-grafico1"></div>
+		</form>
+		</div>
+		
+		<div>
+		<form>
+			<div id="container-grafico2"></div>
+		</form>
+		</div>
+
+		<div>
+		<form>
+			<div id="container-grafico2"></div>
+		</form>
+		</div>		 
+
+		<div>
+		<form>
+			<div id="container-grafico3"></div>
+		</form>
+		</div>
+
+		<div>
+		<form>
+			<div id="container-grafico4"></div>
+		</form>
+		</div>
+		
+		<div>
+		<form>
+			<div id="container-grafico5"></div>
+		</form>
+		</div>		
+		
+		</div>
+		</div>
+</div>
+
+<!--  ===================Teste de grafico =================-->
+
+<script language="JavaScript">
+$(document).ready(function() {  
+   var chart = {
+      type: 'spline'      
+   }; 
+   var title = {
+      text: 'Temperaturas Registradas'   
+   };
+   var subtitle = {
+      text: 'Banco de Dados Piscina IoT'
+   };
+   var xAxis = {
+      type: 'datetime',
+	  minRange: 1000, // uma hora
+      dateTimeLabelFormats: { // don't display the dummy year
+         time: '%HH %MM %SS ',
+		 month: '%e. %b',
+         year: '%b'
+      },
+      title: {
+         text: 'Date'
+      }
+   };
+   var yAxis = {
+      title: {
+         text: 'Temperaturas'
+      },
+      min: 0
+   };
+   var tooltip = {
+      headerFormat: '<b>{series.name}</b><br>',
+      pointFormat: '{point.x:%e. %b %H %M %S}:temperatura {point.y:.2f} C'
+   };
+   var plotOptions = {
+      spline: {
+            lineWidth: 4,
+            states: {
+                hover: {
+                    lineWidth: 5
+                }
+            },
+            marker: {
+                enabled: true
+            },
+            pointInterval: 3600, // one minuto
+            pointStart: Date.UTC(2017, 0, 0, 0, 0, 0)
+		 
+      }
+	  
+   };
+   var series= [
+		{
+         name: 'temperatura de água',
+         data: [
+				{% for i in temperatura_db %}
+					[Date.UTC({{ i[2].split('-')|join(', ') }}, {{ i[3].split(':')|join(', ') }}),{{i[1]|safe}}],
+				{% endfor %}
+         ]		  
+		}, 
+				
+   ];     
+      
+   var json = {};
+   json.chart = chart;
+   json.title = title;
+   json.subtitle = subtitle;
+   json.tooltip = tooltip;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;  
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#container-grafico1').highcharts(json);
+  
+});
+</script>
+
+<script language="JavaScript">
+$(document).ready(function() {  
+   var chart = {
+      type: 'spline'      
+   }; 
+   var title = {
+      text: 'PH Registrados'   
+   };
+   var subtitle = {
+      text: 'Banco de Dados Piscina IoT'
+   };
+   var xAxis = {
+      type: 'datetime',
+	  minRange: 1000, // um segundo
+      dateTimeLabelFormats: { // don't display the dummy year
+         time: '%HH %MM %SS ',
+		 month: '%e. %b',
+         year: '%b'
+      },
+      title: {
+         text: 'Date'
+      }
+   };
+   var yAxis = {
+      title: {
+         text: 'pH'
+      },
+      min: 0
+   };
+   var tooltip = {
+      headerFormat: '<b>{series.name}</b><br>',
+      pointFormat: '{point.x:%e. %b %H %M %S}: Ph= {point.y:.2f}'
+   };
+   var plotOptions = {
+      spline: {
+            lineWidth: 4,
+            states: {
+                hover: {
+                    lineWidth: 5
+                }
+            },
+            marker: {
+                enabled: true
+            },
+            pointInterval: 3600, // one minuto
+            pointStart: Date.UTC(2016, 0, 0, 0, 0, 0)
+		 
+      }
+	  
+   };
+   var series= [
+		
+		{
+         name: 'ph água',
+         data: [
+				{% for i in ph_db %}
+					[Date.UTC( {{ i[2].split('-')|join(', ') }}, {{ i[3].split(':')|join(', ') }}),{{i[1]|safe}}],
+				{% endfor %}
+         ]		  
+		}, 
+	
+   ];     
+      
+   var json = {};
+   json.chart = chart;
+   json.title = title;
+   json.subtitle = subtitle;
+   json.tooltip = tooltip;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;  
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#container-grafico2').highcharts(json);
+  
+});
+</script>
+
+<script language="JavaScript">
+$(document).ready(function() {  
+   var chart = {
+      type: 'spline'      
+   }; 
+   var title = {
+      text: 'Pressão Motor 1'   
+   };
+   var subtitle = {
+      text: 'Banco de Dados Piscina IoT'
+   };
+   var xAxis = {
+      type: 'datetime',
+	  minRange: 1000, // uma hora
+      dateTimeLabelFormats: {
+		time: '%HH %MM %SS ',
+        month: '%e. %b',
+        year: '%b'
+      },
+      title: {
+         text: 'Date'
+      }
+   };
+   var yAxis = {
+      title: {
+         text: 'Pressão'
+      },
+      min: 0
+   };
+   var tooltip = {
+      headerFormat: '<b>{series.name}</b><br>',
+      pointFormat: '{point.x:%e. %b %H %M %S}:pressão= {point.y:.2f} psi'
+   };
+   var plotOptions = {
+      spline: {
+            lineWidth: 4,
+            states: {
+                hover: {
+                    lineWidth: 5
+                }
+            },
+            marker: {
+                enabled: true
+            },
+            pointInterval: 3600, // one minuto
+            pointStart: Date.UTC(2017, 0, 0, 0, 0, 0)
+      }
+	  
+   };
+   var series= [
+
+		{
+         name: 'Pressão Motor 1 psi',
+         data: [
+		 
+			{% for i in psi1_db %}
+				[Date.UTC( {{ i[2].split('-')|join(', ') }}, {{ i[3].split(':')|join(', ') }}),{{i[1]|safe}}],
+			{% endfor %}
+				
+         ]		  
+		},
+		
+		
+   ];     
+      
+   var json = {};
+   json.chart = chart;
+   json.title = title;
+   json.subtitle = subtitle;
+   json.tooltip = tooltip;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;  
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#container-grafico3').highcharts(json);
+   
+});
+
+</script>
+
+<script language="JavaScript">
+$(document).ready(function() {  
+   var chart = {
+      type: 'spline'      
+   }; 
+   var title = {
+      text: 'Pressão Motor 2'   
+   };
+   var subtitle = {
+      text: 'Banco de Dados Piscina IoT'
+   };
+   var xAxis = {
+      type: 'datetime',
+	  minRange: 1000, // uma hora
+      dateTimeLabelFormats: { // don't display the dummy year
+         time: '%HH %MM %SS ',
+		 month: '%e. %b',
+         year: '%b'
+      },
+      title: {
+         text: 'Date'
+      }
+   };
+   var yAxis = {
+      title: {
+         text: 'Pressão'
+      },
+      min: 0
+   };
+   var tooltip = {
+      headerFormat: '<b>{series.name}</b><br>',
+      pointFormat: '{point.x:%e. %b %H %M %S}:pressão= {point.y:.2f} psi'
+   };
+   var plotOptions = {
+      spline: {
+            lineWidth: 4,
+            states: {
+                hover: {
+                    lineWidth: 5
+                }
+            },
+            marker: {
+                enabled: true
+            },
+            pointInterval: 3600, // one minuto
+            pointStart: Date.UTC(2017, 0, 0, 0, 0, 0)
+		 
+      }
+	  
+   };
+   var series= [
+
+		{
+         name: 'Pressão Motor 2 psi',
+         data: [
+             //[Date.UTC(2017,  01, 01), 0.0   ],
+				{% for i in psi2_db %}
+					[Date.UTC( {{ i[2].split('-')|join(', ') }}, {{ i[3].split(':')|join(', ') }}),{{i[1]|safe}}],
+				{% endfor %}
+         ]		  
+		},		
+   ];     
+      
+   var json = {};
+   json.chart = chart;
+   json.title = title;
+   json.subtitle = subtitle;
+   json.tooltip = tooltip;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;  
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#container-grafico4').highcharts(json);
+  
+});
+</script>
+
+<!--  ===================Fim Teste de grafico =================-->
+
+<!--
+<script>
+Highcharts.chart('container-grafico2', {
+	title: { text: 'Banco de Dados Piscina IoT' },
+
+	subtitle: { text: 'Ph da água'},
+
+	xAxis: { type: 'datetime' },
+
+	yAxis: { title: { text: 'Ph da água' } },
+
+	legend: { layout: 'vertical', align: 'right', verticalAlign: 'middle' },
+
+	plotOptions: { series: { pointStart: 0} },
+
+	series: [
+
+		{ name: 'PH', 
+			data: [
+				{% for i in ph_db %}
+					{{i[1]|safe}} ,
+				{% endfor %} 
+			] 
+		},
+	]
+});
+</script>
+
+<script>
+Highcharts.chart('container-grafico3', {
+	title: { text: 'Banco de Dados Piscina IoT' },
+
+	subtitle: { text: 'Pressão Motor 1'},
+
+	xAxis: { type: 'datetime' },
+
+	yAxis: { title: { text: 'Psi Motor 1' } },
+
+	legend: { layout: 'vertical', align: 'right', verticalAlign: 'middle' },
+
+	plotOptions: { series: { pointStart: 0} },
+
+	series: [
+
+		{ name: 'Psi1', 
+			data: [
+				{% for i in psi1_db %}
+					{{i[1]|safe}} ,
+				{% endfor %} 
+			] 
+		},
+	]
+});
+</script>
+
+<script>
+Highcharts.chart('container-grafico4', {
+	title: { text: 'Banco de Dados Piscina IoT' },
+
+	subtitle: { text: 'Pressão Motor 2'},
+
+	xAxis: { type: 'datetime' },
+
+	yAxis: { title: { text: 'Psi Motor 2' } },
+
+	legend: { layout: 'vertical', align: 'right', verticalAlign: 'middle' },
+
+	plotOptions: { series: { pointStart: 0} },
+
+	series: [
+		
+		{ name: 'Psi2', 
+			data: [
+				{% for i in psi2_db %}
+					{{i[1]|safe}} ,
+				{% endfor %} 
+			] 
+		},
+	]
+});
+</script>
+
+-->
+
+{% endblock %}

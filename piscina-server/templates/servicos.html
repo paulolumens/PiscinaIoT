@@ -1,0 +1,78 @@
+{% extends "index.html" %}
+
+{% block content %}
+  <div class="container">
+    <div class="container-fluid">
+      <div class="jumbotron text-center" style="color:black">
+	  <h1 style="color:white">Serviços</h1>
+        <form>
+            <label for="inputValor">Digite um Valor:</label>
+            <input type="text" id="inputValor" />
+            <input type="button" value="Envia Servo" id="bt_servo_update"/>
+            <label>Motor1
+              <button type="button" class="btn btn-danger btn-xs active" id="bt_rele1">M1</button>
+            </label>
+            <label>Motor2
+              <button type="button" class="btn btn-danger btn-xs active" id="bt_rele2">M2</button>
+            </label>
+          </form>
+      </div>
+    </div>
+  </div>
+
+  
+{% block content_10 %}
+{% endblock %}
+  
+  
+<script type="text/javascript">
+    //===========SERVO=================================
+      $("#bt_servo_update").click(function(){
+          var valor = $("#inputValor").val();
+          $.get( "/servo/" + valor, function( data ) {
+              valor;
+              console.log( "Load was performed." );
+              location.href='/servo/'+ valor;
+          });
+      })
+      //================================================
+        //================LED==========================
+      $("#bt_rele1").click(function(){
+        if ($("#bt_rele1").html() == "on")
+        {
+          $("#bt_rele1").html("off");
+          $.get( "/rele1/0", function( data )
+		  {
+			console.log( "Load was performed." );
+		  });
+        }
+        else
+        {
+            $("#bt_rele1").html("on");
+            $.get( "/rele1/1", function( data ){
+              console.log( "Load was performed." );
+            });
+        }
+        })
+        //================================================
+        //================RELE==========================
+          $("#bt_rele2").click(function(){
+            if ($("#bt_rele2").html() == "on")
+            {
+              $("#bt_rele2").html("off");
+              $.get( "/rele2/0", function( data ){
+                  console.log( "Load was performed." );
+              });
+            }
+            else
+            {
+                $("#bt_rele2").html("on");
+                $.get( "/rele2/1", function( data ){
+                    console.log( "Load was performed." );
+                });
+            }
+            })
+            //================================================
+
+</script>   
+{% endblock %}

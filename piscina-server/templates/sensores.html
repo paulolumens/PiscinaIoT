@@ -1,0 +1,137 @@
+{% extends "index.html" %}
+
+{% block content %}
+<style type="text/css">
+  .texto_1{
+      font-family: "Times New Roman", "serif";
+      width:auto;
+      text-align: left;
+      color: darkblue;
+      font-size:150%;
+    }
+  </style>
+    
+<div class="container">
+	<div class="container-fluid">
+		<div class="jumbotron text-center"style="color:white;padding-top:25px;padding-bottom:0px;">
+		<h1>Sensores</h1>
+			<ul class="list-group">
+		    {% for lista1 in lista1 %}
+		    {% endfor %}
+			{% for valores1 in valores1 %}
+			{% endfor %} 
+
+            <dl class="dl-horizontal">
+			<li class="list-group-item texto_1" ><dt> {{lista1[0]}}: <dt> <dd id="sensor0">{{valores1[0]}} Graus C.	</dd></li>
+			<li class="list-group-item texto_1" ><dt> {{lista1[1]}}: <dt> <dd id="sensor1">{{valores1[1]}} pH		</dd></li>
+			<li class="list-group-item texto_1" ><dt> {{lista1[2]}}: <dt> <dd id="sensor2">{{valores1[2]}} Motor 1	</dd></li>
+			<li class="list-group-item texto_1" ><dt> {{lista1[3]}}: <dt> <dd id="sensor3">{{valores1[3]}} Motor 2	</dd></li>
+			</ul>
+				
+<div class="panel panel-info">
+	<div class="panel-heading">
+	SENSORES
+		<div class="panel-body text-left">
+		
+		Temperatura
+			<div class="progress">
+				<div class="progress-bar progress-bar-success" role="progressbar"
+				aria-valuenow=""aria-valuemin="0.0" aria-valuemax="100.0" width=""
+				id="barra_potenciometro0" >100%</div>
+			</div>		
+		
+		Phmetro
+			<div class="progress">
+				<div class="progress-bar progress-bar-success" role="progressbar"
+				aria-valuenow=""aria-valuemin="0.0" aria-valuemax="14.0" width=""
+				id="barra_potenciometro1" >100%</div>
+			</div>		
+
+		Pressão Motor 1
+			<div class="progress">
+				<div class="progress-bar progress-bar-danger" role="progressbar"
+				aria-valuenow="" aria-valuemin="0.0" aria-valuemax="40.0" width=""
+				id="barra_potenciometro2">100%</div>
+			</div>
+			
+		Pressão Motor 2
+			<div class="progress">
+				<div class="progress-bar progress-bar-danger" role="progressbar"
+				aria-valuenow="" aria-valuemin="0.0" aria-valuemax="40.0" width=""
+				id="barra_potenciometro3">100%</div>
+			</div>
+			
+<span class="input-group-btn">
+	<button class="btn btn-success" type="button" id="bt_potenciometro_update">
+		<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+        update
+    </button>
+		<p> </p>
+			<input type="checkbox" aria-label="autoupdate" id="autoupdate_potenciometro"> autoupdate
+        </span>   
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+    $('#bt_potenciometro_update').click(function(){
+        update_potenciometro();
+    })
+
+    $('#autoupdate_potenciometro').change(function() {
+        if ($(this).prop('checked'))
+        {
+            f_autoupdate_potenciometro();
+        }
+    })
+	
+    function update_potenciometro(){
+        $.get("/update_potenciometro",{},
+        function(data){
+            console.log(data);
+			
+            $('#barra_potenciometro0').css('width', data[0] * 16).attr('aria-valuenow',data[0]);
+            $('#barra_potenciometro0').text(data[0]);
+			$('#sensor0').html((data[0])+" Graus C.");
+			
+            $('#barra_potenciometro1').css('width', data[1] * 54).attr('aria-valuenow',data[1]);
+            $('#barra_potenciometro1').text(data[1]);
+			$('#sensor1').html((data[1])+" pH");
+			
+            $('#barra_potenciometro2').css('width',data[2] * 19).attr('aria-valuenow',data[2]);
+            $('#barra_potenciometro2').text(data[2]);
+			$('#sensor2').html((data[2])+" Motor 1");
+			
+            $('#barra_potenciometro3').css('width',data[3] * 19).attr('aria-valuenow',data[3]);
+            $('#barra_potenciometro3').text(data[3]);
+			$('#sensor3').html((data[3])+" Motor 2");			
+			
+        });
+    }
+	
+    function f_autoupdate_potenciometro(){
+        if ($('#autoupdate_potenciometro').prop('checked'))
+        {
+            update_potenciometro();
+            setTimeout(function() {
+                    f_autoupdate_potenciometro();
+            }, 1000);
+        }
+    }
+
+
+</script>
+{% endblock %}
